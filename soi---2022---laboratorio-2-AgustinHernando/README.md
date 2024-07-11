@@ -11,7 +11,7 @@ Sentar las bases del lenguaje para poder comprender los temas a presentar durant
 Los temas que se enlistan a continuación son básicos de programación. Este laboratorio está diseñado para resolverse entre 6 y 8 horas.
 
 
-## Actividades.
+## Actividades
 1. C-strings
 Realice las siguientes actividades:
    1. Obtener la **memoria ram total**, **libre** y **disponible** en *Megabytes*. A partir del archivo */proc/meminfo*. 
