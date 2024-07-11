@@ -1,10 +1,17 @@
 #define FLAG
 #ifdef FLAG
-#define LONGITUD 200
 #define LIMIT " "
 #define actividad1_1_1 1
 #define actividad1_1_2 2
 #define actividad1_1_3 3
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <ctype.h> 
+
+#define SIZE 400
+#define LIMIT " "
 
 const char data_1[3][25] = {
     "Memoria Total[MB]",
@@ -29,5 +36,5 @@ void removeSpaces (char *);
 void actividad1_1();
 void actividad1_2();
 void actividad1_3();
-void actividad2();
+int actividad2();
 #endif

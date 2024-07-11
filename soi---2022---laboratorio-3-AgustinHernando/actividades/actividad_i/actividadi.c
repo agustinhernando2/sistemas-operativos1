@@ -16,11 +16,6 @@
  * 
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <ctype.h> 
 #include "actividadi.h"
 
 
@@ -69,61 +64,88 @@ int main(int argc, char **argv)
         activity1_3Flag = 0;
     }
     if(activity2Flag){
-        actividad2();
+        if(actividad2())
+        {
+            fprintf(stderr,"Error en la actividad 2\n");
+            return EXIT_FAILURE;
+        }
         activity2Flag = 0;
     }
     exit(EXIT_SUCCESS);
 }
 
-void actividad2(){
-    char buffer[LONGITUD]; 
+int actividad2(){
+    char buffer[SIZE]; 
     char *dbuffer;
     char **wdbuffer = NULL;
     char *token;
-    FILE *archivo;
+    FILE *file;
 
-    archivo = fopen ("/proc/version","r");              // modo lectura
-    if (archivo==NULL){
-        printf("No se pudo abrir el archivo.\n");
-        return;
+    file = fopen ("/proc/version","r");              // modo lectura
+    if (file == NULL){
+        perror("Error");
+        return EXIT_FAILURE;
     }
             
-    fgets(buffer, LONGITUD, archivo);                                                       //almacenando cada línea
+    fgets(buffer, SIZE, file);                                                       // almaceno en buffer
     strtok(buffer, "\n");                                                                   // separar por salto
-    //printf("/proc/version: longitud del buffer %ld\n'%s'\n",sizeof(buffer) ,buffer);        // imprimo contenido
     size_t length = strlen(buffer);                                                         // obtengo longitud 
     if (length==0){
         printf("no hay lineas para procesar...\n");
-        return;
+        fclose(file);
+        return EXIT_FAILURE;
     }
-    dbuffer = (char*) malloc(sizeof(char)*length);
+    
+    dbuffer = (char*) malloc(sizeof(char) * (length + 1));
+    if (dbuffer == NULL) {
+        perror("Error al reservar memoria");
+        fclose(file);
+        return 1;
+    }
 
     for (size_t i = 0; i < length; i++){
         dbuffer[i] = toupper(buffer[i]);
     }
-    //printf("/proc/version:  longitud del buffer dinamico %ld\n'%s'\n",sizeof(dbuffer), dbuffer); 
+    dbuffer[length] = '\0'; // null-terminate the string
    
     token = strtok(dbuffer, LIMIT);
     size_t index = 0;
-    while( token != NULL ) {                                                //tengo el tamaño de la palabra
-        wdbuffer = (char **)realloc(wdbuffer,(sizeof(char *))*(index+1));       //le asigno el espacio para apuntar al primer char
-        wdbuffer [index] = (char *)malloc(strlen(token)*sizeof(char));          //le asigno el espacio para dejar espacio para los caracteres
-        wdbuffer [index] = token;                                               //guardo palabra
+    while( token != NULL ) {                                                    //tengo el tamaño de la palabra
+        wdbuffer = (char **)realloc(wdbuffer,(sizeof(char *))*(index + 1));       //le asigno el espacio para apuntar al primer char
+        if (wdbuffer == NULL) {
+            perror("Error al reservar memoria");
+            free(dbuffer);
+            fclose(file);
+            return 1;
+        }
+        wdbuffer[index] = strdup(token); // duplicar el token y asignar la direccion al puntero
+        if (wdbuffer[index] == NULL) {
+            perror("Error al reservar memoria");
+            free(dbuffer);
+            for (size_t i = 0; i < index; i++) {
+                free(wdbuffer[i]);
+            }
+            free(wdbuffer);
+            fclose(file);
+            return 1;
+        }
         token = strtok(NULL, LIMIT);
         index++;
     }
-
-    printf("/proc/version: '%s'\n", buffer);
     size_t acc = 0;
-    for(size_t j = 0; j<index ;j++){
-        printf("[%ld] '%s' \n",strlen(wdbuffer[j]) + 1 ,wdbuffer[j]);
-        acc+=strlen(wdbuffer[j]) + 1;
-    } 
-    printf("tamanio total del word dynamic buffer: [%ld] \n",acc);
 
-	fclose (archivo);
+	for(size_t j = 0; j<index ;j++){
+		printf("[%ld] '%s' \n",strlen(wdbuffer[j]) + 1 ,wdbuffer[j]);
+        free(wdbuffer[j]);
+        acc+=strlen(wdbuffer[j]) + 1;
+	}
+
+    printf("tamanio total del symbols dynamic buffer: [%ld] \n",acc);
+
+	fclose (file);
     free(dbuffer);
     free(wdbuffer);
+    return 0;
 }
 void actividad1_1(){
     FILE *pFile;                            
@@ -228,7 +250,6 @@ void actividad1_3(){
 	while(fgets(buffer,70,pFile)){  
         token =strtok(buffer, ":");
         while( token != NULL ) {
-            //printf( " %s\n", token );
             if(strstr(buffer,"model name") && model==NULL){
                 token = strtok(NULL, "");
                 model = malloc(sizeof(char)*strlen(token));
@@ -237,7 +258,6 @@ void actividad1_3(){
             if(strstr(buffer,"siblings") && siblings == 0){
                 token = strtok(NULL, " ");
                 removeSpaces(token);
-  
                 siblings = atoi(token);
             }
             if(strstr(buffer,"cpu cores") && nCores == 0){
