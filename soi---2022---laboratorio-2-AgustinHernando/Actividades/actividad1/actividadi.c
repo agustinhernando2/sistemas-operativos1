@@ -85,9 +85,7 @@ int main (int argc, char const *argv[])
     printf("SwapOcupada:      %.2f mb\n",SwapOcupada);
 
     fclose(pFile); //Cierra el archivo
-    printf("----/proc/cpuinfo:----\n");
-
-
+    
     pFile = fopen ("/proc/cpuinfo","r");
     if (pFile==NULL){
         printf("No se pudo abrir el archivo.\n");
@@ -97,23 +95,18 @@ int main (int argc, char const *argv[])
 	char *model=NULL;
 	int nCores = 0;
     int siblings = 0;
-
     
 	while(fgets(buffer,70,pFile)){  
         token =strtok(buffer, ":");
         while( token != NULL ) {
-            //printf( " %s\n", token );
-
             if(strstr(buffer,"model name") && model==NULL){
                 token = strtok(NULL, "");
                 model = malloc(sizeof(char)*strlen(token));
                 strcpy(model,token);
             }
             if(strstr(buffer,"siblings") && siblings == 0){
-
                 token = strtok(NULL, " ");
                 removeSpaces(token);
-  
                 siblings = atoi(token);
             }
             if(strstr(buffer,"cpu cores") && nCores == 0){
@@ -126,7 +119,7 @@ int main (int argc, char const *argv[])
     }
 
     siblings /= nCores;
-	
+	printf("----/proc/cpuinfo:----\n");
     printf("Modelo de CPU:             %s \n", model);
     printf("Cantidad de cores:                %d \n",nCores);
     printf("Cantidad de thread por cores:     %d \n",siblings);
