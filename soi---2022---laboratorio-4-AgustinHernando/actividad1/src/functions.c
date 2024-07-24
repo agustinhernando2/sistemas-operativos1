@@ -1,10 +1,6 @@
 #include "../include/functions.h"
 
-#define DOLLAR "$"
-#define SPACE " "
-#define PWD "PWD"
-#define USER "USER"
-#define OLDPWD "OLDPWD"
+// Definir las variables
 
 char command[500];
 char pwd[256];
@@ -12,10 +8,6 @@ int running = 1;
 char *token;
 char *const *argumentos;
 
-/**
-* @brief actualiza las variables de entorno cuando se cambia de directorio
-* y personaliza el command prompt de myshell
-**/
 void show_prompt(){
     char* username = getenv(USER);
 	char hostname[20];
@@ -30,11 +22,11 @@ void show_prompt(){
     printf(CELESTE" ");
 
 }
+int get_running(){
+	return running;
+}
 
-/**
-* @brief compara el comando y ejecuta funciones que respondan en funcion de él.
-**/
-void commandEjecute(){
+void exec_command(){
 
     if((strncmp(command,"clr",3) == 0)||(strncmp(command,"clear",4) == 0)){
 		clear_shell();
@@ -50,24 +42,14 @@ void commandEjecute(){
 
 }
 
-/**
-* @brief Limpia el command line de myshell.
-**/
 void clear_shell(){
     printf("\033[H\033[J");
 }
 
-/**
-* @brief exit.
-**/
 void exit_shell(){
     running = 0;
 }
 
-/**
-* @brief solicita el directorio actual.
-* @return currentDirectory
-**/
 char* get_directory(){
 	token = strtok(command,SPACE);
 	if(token != NULL){
@@ -88,9 +70,6 @@ char* get_directory(){
 	return arg;
 }
 
-/**
-* @brief modifica el directorio actual en la variable de entorno.
-**/
 void exchange_directory(char *dir){
 	if(strcmp(dir,"-") == 0){
 		dir = getenv(OLDPWD);
@@ -104,9 +83,6 @@ void exchange_directory(char *dir){
 	}
 }
 
-/**
-* @brief ejecuta echo.
-**/
 void echo_shell(){
     token = strtok(command,SPACE);
 	if(token != NULL){ 
@@ -133,9 +109,6 @@ void echo_shell(){
 	}
 }
 
-/**
-* @brief solicitar un comando ingresado por el usuario el cual se guardará en una variable command.
-**/
 void get_command(){
 	fgets(command,sizeof(command),stdin); //escanea el command ingresado
 }
@@ -161,9 +134,7 @@ char** get_arguments_for_extern_command(){
 	arg[index] = NULL;
 	return arg;
 }
-/**
-* @brief ejecuta el comando en caso con system como ultima alternativa.
-**/
+
 void extern_command(char *c[]){
     pid_t pid = fork();
 	switch (pid)

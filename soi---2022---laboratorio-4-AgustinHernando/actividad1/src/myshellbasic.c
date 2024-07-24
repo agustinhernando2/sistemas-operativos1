@@ -1,15 +1,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "functions.c"
+
+#include "../include/functions.h"
+
 int main (int argc, char *argv[])
 {
 
     if(argc == 1){
-        while(running){
+        while(get_running()){
             show_prompt();
             get_command();
-            commandEjecute();  
+            exec_command();  
         }
     }
 

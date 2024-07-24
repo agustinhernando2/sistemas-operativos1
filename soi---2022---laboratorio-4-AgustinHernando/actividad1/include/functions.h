@@ -1,3 +1,7 @@
+// include/functions.h
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,11 +19,18 @@
 #define USER "USER"
 #define OLDPWD "OLDPWD"
 
-char command[500];
-char pwd[256];
-int running = 1;
-char *token;
-char *const *argumentos;
+
+extern char command[500];
+extern char pwd[256];
+extern int running;
+extern char *token;
+extern char *const *argumentos;
+
+/**
+ * @brief obtiene el valor de la variable running.
+ * @return running
+ * */
+int get_running();
 
 /**
 * @brief actualiza las variables de entorno cuando se cambia de directorio
@@ -73,3 +84,5 @@ char** get_arguments_for_extern_command();
 * @brief ejecuta el comando en caso con system como ultima alternativa.
 **/
 void extern_command(char *c[]);
+
+#endif // FUNCTIONS_H
