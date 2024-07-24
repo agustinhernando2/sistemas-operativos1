@@ -1,13 +1,4 @@
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include<sys/wait.h>
-
-#define AMARILLO "\x1b[33m"
-#define GRIS "\x1b[37m"
-#define CELESTE "\x1b[36m"
-#define ROJO     "\x1b[31m"
+#include "../include/functions.h"
 
 #define DOLLAR "$"
 #define SPACE " "
@@ -20,17 +11,6 @@ char pwd[256];
 int running = 1;
 char *token;
 char *const *argumentos;
-
-void extern_command(char *c[]);
-void echo_shell();
-void clear_shell();
-void exit_shell();
-void exchange_directory(char *dir);
-char* get_directory();
-void show_prompt();
-void get_command();
-char** get_arguments_for_extern_command();
-
 
 /**
 * @brief actualiza las variables de entorno cuando se cambia de directorio
