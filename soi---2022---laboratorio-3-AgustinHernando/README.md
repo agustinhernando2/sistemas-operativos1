@@ -8,7 +8,7 @@ Sentar las bases del diseño e implementación de librerías estáticas y dinám
 
 
 ## Duración
-COn el material dado en clase, este laboratorio está diseñado para resolverse entre 8 y 10 horas.
+Con el material dado en clase, este laboratorio está diseñado para resolverse entre 8 y 10 horas.
 
 
 ## Actividades
