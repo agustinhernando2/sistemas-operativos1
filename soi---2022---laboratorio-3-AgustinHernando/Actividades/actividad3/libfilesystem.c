@@ -49,8 +49,6 @@ void filesystemsCJSON(){
 	}
     cJSON_AddItemReferenceToObject(json,"data",data);
 
-
-
 	char *imprimir = cJSON_Print(json);
 end:
 	printf("%s\n",imprimir);

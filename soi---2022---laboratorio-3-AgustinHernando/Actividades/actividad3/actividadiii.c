@@ -191,7 +191,6 @@ void jsonFormatter2(char ** words,int limit, char *version){
     cJSON *dataJson = NULL;
     cJSON *item = NULL;
 
-
     cJSON *monitor = cJSON_CreateObject();
     if (monitor == NULL){goto end;}
 
