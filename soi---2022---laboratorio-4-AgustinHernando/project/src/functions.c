@@ -2,56 +2,53 @@
 
 // Definir las variables
 
-char command[500];
-char pwd[256];
 int running = 1;
-char *token;
+// char *token;
 char *const *argumentos;
+char pwd[PATH_MAX];
 
-void show_prompt(){
-    char* username = getenv(USER);
-	char hostname[20];
-    gethostname(hostname, sizeof(hostname));
+void show_prompt(char *username, char *hostname){
     if(getcwd(pwd,sizeof(pwd)) == NULL){
     	perror("Error");
     }
     setenv(PWD,pwd,1);
     // ansi colors https://talyian.github.io/ansicolors/
-    printf(AMARILLO"%s@",username);
-    printf(GRIS"%s:~%s$",hostname,pwd);
-    printf(CELESTE" ");
-
+    printf(AMARILLO "%s@" GRIS "%s:~%s$" CELESTE ">",username,hostname,pwd);
 }
+
 int get_running(){
 	return running;
 }
 
-void exec_command(){
+void exec_command(char *command){
+	char *cmd_token = strtok(command, SPACE);
 
-    if((strncmp(command,"clr",3) == 0)||(strncmp(command,"clear",4) == 0)){
+    if((strcmp(cmd_token,"clr") == 0)||(strcmp(cmd_token,"clear") == 0)){
 		clear_shell();
-	}else if((strncmp(command,"quit",4) == 0)||(strncmp(command,"exit",4) == 0)){
+	}else if((strcmp(cmd_token,"quit") == 0)||(strcmp(cmd_token,"exit") == 0)){
 		exit_shell();
-	}else if((strncmp(command,"cd ",3) == 0)){ 
-		exchange_directory(get_directory());
-	}else if((strncmp(command,"echo",4) == 0)){
-		echo_shell();
+	}else if((strcmp(cmd_token,"cd ") == 0)){ 
+		exchange_directory(get_directory(command));
+	}else if((strcmp(cmd_token,"echo") == 0)){
+		char *msg = strtok(NULL, "");
+		echo_shell(msg, strlen(msg));
 	}else{
-		extern_command(get_arguments_for_extern_command());
+		extern_command(get_arguments_for_extern_command(command));
 	}
 
 }
 
 void clear_shell(){
-    printf("\033[H\033[J");
+	system("clear");
+    // printf(CLEAR);
 }
 
 void exit_shell(){
     running = 0;
 }
 
-char* get_directory(){
-	token = strtok(command,SPACE);
+char* get_directory(char *command){
+	char *token = strtok(command,SPACE);
 	if(token != NULL){
 			token = strtok(NULL,"\n");
 	}
@@ -83,41 +80,44 @@ void exchange_directory(char *dir){
 	}
 }
 
-void echo_shell(){
-    token = strtok(command,SPACE);
-	if(token != NULL){ 
-			token = strtok(NULL,"\n");
+void echo_shell(char *msg, size_t len){
+	if(msg == NULL){ 
+		return;
 	}
-	if(strncmp(token,DOLLAR,1) == 0){
-		char *env = getenv(token+1);
-		if(env != NULL) printf("%s\n",env);
-		else {
+	// compare if the first character is a dollar sign
+	if(strncmp(msg,DOLLAR,1) == 0){
+		// get the environment variable
+		char *env = getenv(msg + 1);
+		if (env != NULL){ 
+			printf("%s\n",env);
+		} else {
 			fprintf(stderr,ROJO"Error: Environment variable not found");
 			printf("\n");
 			}
 
 	}else {
-		if(token[0]=='"' && (token[strlen(token)]='"')){
-			char comentario[strlen(token)-2];
-			for(int i=0; i< strlen(token)-2;i++){ 
-				comentario[i]=token[i+1];
+		// check if the message is a comment
+		if(msg[0] == '"' && ( msg[len - 2] == '"' )){
+			char comment[len - 2];
+			for(int i=0; i < len - 3;i++){ 
+				comment[i]=msg[i + 1];
 			}
-            comentario[strlen(token)-3]='\0';
-			printf("comentario:%ld, %ld   %s\n",strlen(token),strlen(comentario),comentario);
+			comment[len - 3]='\0';
+			printf("comment: %ld, %ld   %s\n",len,strlen(comment),comment);
 		}
-		else printf("%s\n",token);
+		else printf("%s\n",msg);
 	}
 }
 
-void get_command(){
-	fgets(command,sizeof(command),stdin); //escanea el command ingresado
+void get_command(char *command){
+	fgets(command, CMD_MAX, stdin);
 }
 
-char** get_arguments_for_extern_command(){
+char** get_arguments_for_extern_command(char *command){
 	char **arg= malloc(50*sizeof(char*));
 	int index=0;
 
-	token = strtok(command,"\n");
+	char *token = strtok(command,"\n");
 	arg[index] =  strdup(token);
 	token = strtok(arg[index]," ");
 	if(token != NULL){
@@ -158,3 +158,5 @@ void extern_command(char *c[]){
 		break;
 	}
 }
+
+

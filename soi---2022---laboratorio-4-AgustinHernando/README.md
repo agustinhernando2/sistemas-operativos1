@@ -30,7 +30,7 @@ Por ejemplo, para el home: _username@hostname:~$_
 #### 2. Internal commands
 _myshell_ debe soportar los siguientes comandos internos:
 
-- __cd \> directorio \>__ : cambia el directorio actual a \<directorio\>. Si \<directorio\> no está presente, reporta el directorio actual. Si el directorio no existe se debe imprimir un error apropiado. Además, este comando debe cambiar la variable de entorno PWD. 
+- __cd \<directorio\>__ : cambia el directorio actual a \<directorio\>. Si \<directorio\> no está presente, reporta el directorio actual. Si el directorio no existe se debe imprimir un error apropiado. Además, este comando debe cambiar la variable de entorno PWD. 
 Este comando debe soportar la opción *cd -*, que retorna al último directorio de trabajo (__OLDPWD__).
 
 - __clr__: limpia la pantalla
