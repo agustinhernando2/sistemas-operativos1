@@ -15,6 +15,7 @@ libstatic.a: cJSON.o jsonformatter.o
  
 cJSON.o: cJSON.c cJSON.h 
 	$(CC) $(CFLAGS) -o cJSON.o -c cJSON.c 
+	
 jsonformatter.o: cJSON.c cJSON.h 
 	$(CC) $(CFLAGS) -o jsonformatter.o -c jsonformatter.c 
  

@@ -94,7 +94,7 @@ int main(int argc, char **argv)
         dlclose(libhandle);
     }
     if ((activity1_1Flag && jsonFlag && actFileSystem) ||
-        (activity2Flag && jsonFlag && actFileSystem))
+        (activity2Flag && jsonFlag && !actFileSystem))
     {
         printf(",\n");
     }

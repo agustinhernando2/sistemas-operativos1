@@ -172,7 +172,7 @@ int actividad2(int json)
     }
     if (json)
     {
-        jsonFormatter2(wdbuffer, index, buffer);
+        jsonFormatterWordAndVersion(wdbuffer, index, buffer);
     }
     else
     {
@@ -245,7 +245,7 @@ void actividad1_1(int json)
             MemFree,
             MemAvailable};
         printf("[\n");
-        jsonFormatter(value, actividad1_1_1, sizeof(value) / sizeof(double), " ");
+        jsonFormatterMemInfo(value, actividad1_1_1, sizeof(value) / sizeof(double), " ");
         printf(",");
     }
     else
@@ -301,7 +301,7 @@ void actividad1_2(int json)
         double value[1] = {
             SwapOcupada};
 
-        jsonFormatter(value, actividad1_1_2, sizeof(value) / sizeof(double), " ");
+        jsonFormatterMemInfo(value, actividad1_1_2, sizeof(value) / sizeof(double), " ");
         printf(",");
     }
     else
@@ -364,7 +364,7 @@ void actividad1_3(int json)
         double value[2] = {
             nCores,
             siblings};
-        jsonFormatter(value, actividad1_1_3, sizeof(value) / sizeof(double), model);
+        jsonFormatterMemInfo(value, actividad1_1_3, sizeof(value) / sizeof(double), model);
         printf("\n]\n");
     }
     else

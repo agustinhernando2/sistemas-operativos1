@@ -5,8 +5,7 @@ Luego:
    1. Imprima la lista de palabras en mayúscula. 
    2. libere la memoria que haya alocado.
 
-## Archivo `/proc/version` y `/proc/cpuinfo`
-### `/proc/meminfo`
+## Archivo `/proc/version` 
 El archivo /proc/version contiene una línea de texto que proporciona información sobre la versión del kernel de Linux, el compilador utilizado, y la fecha de compilación. Un ejemplo del contenido del archivo es:
 ```bash
 Linux version 5.4.0-42-generic (buildd@lcy01-amd64-021) (gcc version 9.3.0 (Ubuntu 9.3.0-10ubuntu2)) #46-Ubuntu SMP Fri Jul 10 05:46:45 UTC 2020

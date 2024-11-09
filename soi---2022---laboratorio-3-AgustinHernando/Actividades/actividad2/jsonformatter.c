@@ -23,8 +23,16 @@ const char data_3[2][25] = {
         };
 const char information_3[20] = "model";
 
-
-void jsonFormatter(double value[], int flag, int n,char *info){
+/**
+ * @brief Formatea un arreglo a JSON.
+ * Genera un JSON con un campo "path" o "model" y una lista de datos
+ * 
+ * @param value Array
+ * @param flag 1 para data_1, 2 para data_2, 3 para data_3.
+ * @param n
+ * @param info para flag = 3.
+ */
+void jsonFormatterMemInfo(double value[], int flag, int n,char *info){
    
     char *json = NULL;
     cJSON *information = NULL;
@@ -80,7 +88,16 @@ end:
     cJSON_Delete(monitor);
     printf("%s\n",json);
 }
-void jsonFormatter2(char ** words,int limit, char *version){
+
+
+/**
+ * @brief Formatea Array de palabras y versión en JSON.
+ * 
+ * @param words Array de palabras.
+ * @param limit Cantidad de palabras.
+ * @param version version.
+ */
+void jsonFormatterWordAndVersion(char ** words,int limit, char *version){
    
     char *json = NULL;
     cJSON *information = NULL;

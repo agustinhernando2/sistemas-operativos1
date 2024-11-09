@@ -163,7 +163,7 @@ int actividad2()
 void actividad1_1()
 {
     FILE *pFile;
-    pFile = fopen("/proc/meminfo", "r");
+    pFile = fopen(meminfo, "r");
     if (pFile == NULL)
     {
         fprintf(stderr, "No se pudo abrir el archivo.\n");
@@ -205,7 +205,7 @@ void actividad1_1()
             token = strtok(NULL, " ");
         }
     }
-    printf("----/proc/meminfo:----\n");
+    printf("----%s:----\n",meminfo);
     printf("MemTotal:         %.2f MB\n", MemTotal);
     printf("MemFree:          %.2f MB\n", MemFree);
     printf("MemAvailable:     %.2f MB\n", MemAvailable);
@@ -215,7 +215,7 @@ void actividad1_1()
 void actividad1_2()
 {
     FILE *pFile;
-    pFile = fopen("/proc/meminfo", "r");
+    pFile = fopen(meminfo, "r");
     if (pFile == NULL)
     {
         fprintf(stderr, "No se pudo abrir el archivo.\n");
@@ -249,7 +249,7 @@ void actividad1_2()
     }
 
     double SwapOcupada = SwapTotal - SwapFree;
-    printf("----/proc/meminfo:----\n");
+    printf("----%s:----\n",meminfo);
     printf("SwapOcupada:      %.2f MB\n", SwapOcupada);
 
     fclose(pFile); // Cierra el archivo
@@ -261,7 +261,7 @@ void actividad1_3()
     char buffer[70];
     char *token;
     // extraigo cada linea del archivo y la proceso por separado
-    pFile = fopen("/proc/cpuinfo", "r");
+    pFile = fopen(cpuinfo, "r");
     if (pFile == NULL)
     {
         printf("No se pudo abrir el archivo.\n");
@@ -301,7 +301,7 @@ void actividad1_3()
 
     siblings /= nCores;
 
-    printf("----/proc/cpuinfo:----\n");
+    printf("----%s:----\n",cpuinfo);
     printf("Modelo de CPU:             %s", model);
     printf("Cantidad de cores:                %d \n", nCores);
     printf("Cantidad de thread por cores:     %d \n", siblings);

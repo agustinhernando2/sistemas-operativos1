@@ -25,27 +25,27 @@ void filesystemsCJSON(){
 	cJSON_AddItemToObject(json, "path", information);
 
 
-    cJSON *data = cJSON_CreateObject();
+    cJSON *data = cJSON_CreateArray();
 	if (data == NULL){goto end;}
-	char array [20];
-	int cont = 0;
-	while(fgets(array,sizeof(array),archivo)){
-		char *token = strtok(array,"\t\n");
-		if(strstr(array,"nodev")){  						//busca los renglones del archivo que comienzan con nodev
-			while(token != NULL){
-				if(cont == 1){
-					cJSON_AddStringToObject(data,"nodev",token);
-				}
-				cont ++;
-				token = (strtok(NULL,"\t\n"));
-			}
-			cont = 0;
-		}else{
-			while(token != NULL){
-				cJSON_AddStringToObject(data,"     ",token);
-				token = (strtok(NULL,"\t\n"));
-			}
-		}
+	
+	char row[20];
+	while(fgets(row,sizeof(row),archivo)){
+		char *token = strtok(row,"\t\n");
+		char current[30] = "";
+		
+		if (strstr(row, "nodev")) {  
+            strcpy(current, "nodev ");
+            token = strtok(NULL, "\t\n"); 
+            if (token != NULL) {
+                strcat(current, token); 
+            }
+        } else {  
+            strcpy(current, "      ");
+            if (token != NULL) {
+                strcat(current, token);  
+            }
+        }
+        cJSON_AddItemToArray(data, cJSON_CreateString(current)); 
 	}
     cJSON_AddItemReferenceToObject(json,"data",data);
 

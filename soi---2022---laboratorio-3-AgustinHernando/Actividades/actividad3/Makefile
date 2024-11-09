@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Werror -pedantic 
+CFLAGS = -Wall -Werror -pedantic -g
 EXEC = actividad.elf
 OBJS = cJSON.o actividadiii.o libfilesystem.so 
  
